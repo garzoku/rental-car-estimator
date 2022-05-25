@@ -80,6 +80,8 @@ class App {
     System.out.println("Enter your age: ");
     int age = Integer.parseInt(userInputs.nextLine());
 
+    userInputs.close();
+
     App app = new App(pickupDate, daysForRental, payToll, hasGps, hasRoadsideAssist, age);
     DecimalFormat formatter = new DecimalFormat("#.##");
     formatter.setRoundingMode(RoundingMode.CEILING);

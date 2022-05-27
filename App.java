@@ -67,13 +67,13 @@ class App {
     daysForRental = Integer.parseInt(userInputs.nextLine());
 
     System.out.println("Would you like to add a toll tag for $3.95 per day? (yes or no):");
-    payToll = App.getInputAsBoolean(userInputs.nextLine());
+    payToll = getInputAsBoolean(userInputs.nextLine());
 
     System.out.println("Would you like to add GPS for $2.95 per day? (yes or no):");
-    hasGps = App.getInputAsBoolean(userInputs.nextLine());
+    hasGps = getInputAsBoolean(userInputs.nextLine());
 
     System.out.println("Would you like to add Roadside Assistance for $3.95 per day? (yes or no):");
-    hasRoadsideAssist = App.getInputAsBoolean(userInputs.nextLine());
+    hasRoadsideAssist = getInputAsBoolean(userInputs.nextLine());
 
     System.out.println("Enter your age: ");
     age = Integer.parseInt(userInputs.nextLine());

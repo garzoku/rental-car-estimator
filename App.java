@@ -3,56 +3,54 @@ import java.text.DecimalFormat;
 import java.util.Scanner;
 
 class App {
-  String pickupDate;
-  int daysForRental;
-  boolean payToll;
-  boolean hasGps;
-  boolean hasRoadsideAssist;
-  int age;
+  private static String pickupDate;
+  private static int daysForRental;
+  private static boolean payToll;
+  private static boolean hasGps;
+  private static boolean hasRoadsideAssist;
+  private static int age;
 
-  public static boolean getInputAsBoolean(String input) {
+  public static void main(String args[]) {
+    getUserInput();
+
+    DecimalFormat formatter = new DecimalFormat("#.##");
+    formatter.setRoundingMode(RoundingMode.CEILING);
+    double basicRentalCost = getCostOfRental(daysForRental);
+    double costOfOptions = getCostOfOptions(payToll, hasGps, hasRoadsideAssist, daysForRental);
+    double underageCharge = basicRentalCost * .30;
+    double totalCost = age < 25 ? (basicRentalCost + costOfOptions + underageCharge)
+        : (basicRentalCost + costOfOptions);
+
+    printMessage(formatter, basicRentalCost, costOfOptions, underageCharge, totalCost);
+  }
+
+  private static void printMessage(DecimalFormat formatter, double rentalCost, double optionsCost,
+      double underageCharge,
+      double totalCost) {
+    if (age < 25) {
+      String prompt = String.format(
+          "Basic Car Rental: $%s\nOptions Cost: $%s\nUnderage Surcharge: $%s\nTotal Cost: $%s",
+          formatter.format(rentalCost), formatter.format(optionsCost), formatter.format(underageCharge),
+          formatter.format(totalCost));
+      System.out.println(prompt);
+    } else {
+      String prompt = String.format(
+          "Basic Car Rental: $%s\nOptions Cost: $%s\nUnderage Surcharge: $%s\nTotal Cost: $%s",
+          formatter.format(rentalCost), formatter.format(optionsCost), formatter.format(0),
+          formatter.format(totalCost));
+      System.out.println(prompt);
+    }
+  }
+
+  private static boolean getInputAsBoolean(String input) {
     return input.equalsIgnoreCase("yes") ? true : false;
   }
 
-  public App(String pickupDate, int daysForRental, boolean payToll, boolean hasGps, boolean hasRoadsideAssist,
-      int age) {
-    this.pickupDate = pickupDate;
-    this.daysForRental = daysForRental;
-    this.payToll = payToll;
-    this.hasGps = hasGps;
-    this.hasRoadsideAssist = hasRoadsideAssist;
-    this.age = age;
+  private static double getCostOfRental(double days) {
+    return days * 29.99;
   }
 
-  String getPickupDate() {
-    return this.pickupDate;
-  }
-
-  int getdaysForRental() {
-    return this.daysForRental;
-  }
-
-  boolean getpayToll() {
-    return this.payToll;
-  }
-
-  boolean getHasGps() {
-    return this.hasGps;
-  }
-
-  boolean getHasRoadsideAssist() {
-    return this.hasRoadsideAssist;
-  }
-
-  int getAge() {
-    return this.age;
-  }
-
-  double getCostOfRental() {
-    return this.daysForRental * 29.99;
-  }
-
-  double getCostOfOptions(boolean payToll, boolean hasGps, boolean hasRoadsideAssist, int numberOfDays) {
+  private static double getCostOfOptions(boolean payToll, boolean hasGps, boolean hasRoadsideAssist, int numberOfDays) {
     double option1 = payToll == true ? 3.95 : 0;
     double option2 = hasGps == true ? 2.95 : 0;
     double option3 = hasRoadsideAssist == true ? 3.95 : 0;
@@ -60,49 +58,26 @@ class App {
     return totalCost;
   }
 
-  public static void main(String args[]) {
+  private static void getUserInput() {
     Scanner userInputs = new Scanner(System.in);
     System.out.println("Enter pickup date (i.e. 10/03/2022): ");
-    String pickupDate = userInputs.nextLine();
+    pickupDate = userInputs.nextLine();
 
     System.out.println("Enter the number of days you will need rental:");
-    int daysForRental = Integer.parseInt(userInputs.nextLine());
+    daysForRental = Integer.parseInt(userInputs.nextLine());
 
     System.out.println("Would you like to add a toll tag for $3.95 per day? (yes or no):");
-    boolean payToll = App.getInputAsBoolean(userInputs.nextLine());
+    payToll = App.getInputAsBoolean(userInputs.nextLine());
 
     System.out.println("Would you like to add GPS for $2.95 per day? (yes or no):");
-    boolean hasGps = App.getInputAsBoolean(userInputs.nextLine());
+    hasGps = App.getInputAsBoolean(userInputs.nextLine());
 
     System.out.println("Would you like to add Roadside Assistance for $3.95 per day? (yes or no):");
-    boolean hasRoadsideAssist = App.getInputAsBoolean(userInputs.nextLine());
+    hasRoadsideAssist = App.getInputAsBoolean(userInputs.nextLine());
 
     System.out.println("Enter your age: ");
-    int age = Integer.parseInt(userInputs.nextLine());
+    age = Integer.parseInt(userInputs.nextLine());
 
     userInputs.close();
-
-    App app = new App(pickupDate, daysForRental, payToll, hasGps, hasRoadsideAssist, age);
-    DecimalFormat formatter = new DecimalFormat("#.##");
-    formatter.setRoundingMode(RoundingMode.CEILING);
-    double basicRentalCost = app.getCostOfRental();
-    double costOfOptions = app.getCostOfOptions(app.payToll, app.hasGps, app.hasRoadsideAssist, app.daysForRental);
-    double underageCharge = basicRentalCost * .30;
-    double totalCost = app.age < 25 ? (basicRentalCost + costOfOptions + underageCharge)
-        : (basicRentalCost + costOfOptions);
-
-    if (app.age < 25) {
-      String prompt = String.format(
-          "Basic Car Rental: $%s\nOptions Cost: $%s\nUnderage Surcharge: $%s\nTotal Cost: $%s",
-          formatter.format(basicRentalCost), formatter.format(costOfOptions), formatter.format(underageCharge),
-          formatter.format(totalCost));
-      System.out.println(prompt);
-    } else {
-      String prompt = String.format(
-          "Basic Car Rental: $%s\nOptions Cost: $%s\nUnderage Surcharge: $%s\nTotal Cost: $%s",
-          formatter.format(basicRentalCost), formatter.format(costOfOptions), formatter.format(0),
-          formatter.format(totalCost));
-      System.out.println(prompt);
-    }
   }
 }
